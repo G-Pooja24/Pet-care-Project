@@ -1,0 +1,189 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Register with OTP</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px #ccc;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            display: block;
+            width: 40%;
+            padding: 12px;
+            margin: 15px auto 0 auto;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .otp-box { display: none; }
+        #registerSection { display: none; }
+
+        .success { color: green; text-align: center; margin-top: 10px; }
+        .error { color: red; text-align: center; margin-top: 10px; }
+
+        .switch-link {
+            color: blue;
+            margin-top: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    
+     LOGIN SECTION 
+    <div id="loginSection">
+        <h2>Login with Email OTP</h2>
+
+        <input type="email" id="loginEmail" placeholder="Enter email">
+
+        <button onclick="sendLoginOtp()">Send OTP</button>
+
+        <div class="otp-box" id="loginOtpBox">
+            <input type="text" id="loginOtp" placeholder="Enter OTP">
+            <button onclick="verifyLogin()">Login</button>
+        </div>
+
+        <p id="loginMsg"></p>
+
+        <p class="switch-link" onclick="showRegister()">New User? Register</p>
+    </div>
+
+
+    < REGISTER SECTION 
+    <div id="registerSection">
+        <h2>Register</h2>
+
+        <input type="text" id="regName" placeholder="Enter Name">
+        <input type="email" id="regEmail" placeholder="Enter Email">
+        <input type="password" id="regPassword" placeholder="Enter Password">
+
+        <select id="regRole">
+            <option value="">Select role</option>
+            <option value="owner">Pet Owner</option>
+            <option value="vet">Veterinarian</option>
+        </select>
+
+        <button onclick="sendRegisterOtp()">Send OTP</button>
+
+        <div class="otp-box" id="registerOtpBox">
+            <input type="text" id="regOtp" placeholder="Enter OTP">
+            <button onclick="verifyRegister()">Register</button>
+        </div>
+
+        <p id="registerMsg"></p>
+
+        <p class="switch-link" onclick="showLogin()">Already have an account? Login</p>
+    </div>
+
+</div>
+
+<script>
+    function showRegister() {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("registerSection").style.display = "none";
+    }
+
+    // ---------------- LOGIN OTP ----------------
+    function sendLoginOtp() {
+        let email = document.getElementById("loginEmail").value;
+        let msg = document.getElementById("loginMsg");
+
+        fetch(`/auth/send-otp?email=` + email, { method: "POST" })
+        .then(res => res.text())
+        .then(data => {
+            msg.innerHTML = "OTP sent!";
+            msg.className = "success";
+            document.getElementById("loginOtpBox").style.display = "block";
+        });
+    }
+
+    function verifyLogin() {
+        let email = document.getElementById("loginEmail").value;
+        let otp = document.getElementById("loginOtp").value;
+        let msg = document.getElementById("loginMsg");
+
+        fetch(`/auth/login?email=${email}&otp=${otp}`, { method: "POST" })
+        .then(res => res.text())
+        .then(data => {
+            msg.innerHTML = data;
+            msg.className = data.includes("Successful") ? "success" : "error";
+        });
+    }
+
+
+    // ---------------- REGISTER OTP ----------------
+    function sendRegisterOtp() {
+        let email = document.getElementById("regEmail").value;
+        let msg = document.getElementById("registerMsg");
+
+        fetch(`/auth/send-otp?email=` + email, { method: "POST" })
+        .then(res => res.text())
+        .then(data => {
+            msg.innerHTML = "OTP sent!";
+            msg.className = "success";
+            document.getElementById("registerOtpBox").style.display = "block";
+        });
+    }
+
+    function verifyRegister() {
+        let name = document.getElementById("regName").value;
+        let email = document.getElementById("regEmail").value;
+        let password = document.getElementById("regPassword").value;
+        let role = document.getElementById("regRole").value;
+        let otp = document.getElementById("regOtp").value;
+
+        let msg = document.getElementById("registerMsg");
+
+        fetch(`/auth/register?name=${name}&email=${email}&password=${password}&role=${role}&otp=${otp}`, {
+            method: "POST"
+        })
+        .then(res => res.text())
+        .then(data => {
+            msg.innerHTML = data;
+            msg.className = data.includes("Successful") ? "success" : "error";
+        });
+    }
+</script>
+
+</body>
+</html> -->

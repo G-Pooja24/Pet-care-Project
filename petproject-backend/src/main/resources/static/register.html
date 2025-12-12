@@ -1,0 +1,136 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to right, rgb(198, 118, 118), rgb(200, 200, 216));
+            
+        }
+
+        .card {
+            width: 360px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, select, button {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="card">
+    <h2>Create Account</h2>
+
+    <input id="name" type="text" placeholder="Full Name" required>
+    <input id="email" type="email" placeholder="Email" required>
+    <input id="password" type="password" placeholder="Password" required>
+
+    <select id="role">
+        <option value="">Select Role</option>
+        <option value="OWNER">Owner</option>
+        <option value="VETERINARIAN">Veterinarian</option>
+    </select>
+
+    <button onclick="sendOtp()">Send OTP</button>
+
+    <input id="otp" type="text" placeholder="Enter OTP">
+
+    <button onclick="verifyOtp()">Register</button>
+
+    <p id="msg"></p>
+</div>
+
+<script>
+    function sendOtp() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const role = document.getElementById("role").value; // sends OWNER/VETERINARIAN
+
+    fetch("http://localhost:9090/auth/send-otp", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            role: role
+        })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        console.log(msg);
+        alert(msg);
+    })
+    .catch(err => console.error(err));
+}
+
+
+    function verifyOtp() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const otp = document.getElementById("otp").value;
+    const role = document.getElementById("role").value;
+
+    const formData = new URLSearchParams();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("role", role);
+    formData.append("otp", otp);
+
+    fetch("/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("msg").innerHTML = data;
+
+        if (data.includes("Success")) {
+            alert("Registration Successful!");
+            window.location.href = "login.html";
+        }
+    });
+}
+</script>
+
+</body>
+</html> 
+
+ -->

@@ -3,7 +3,7 @@
 package com.petproject.petproject.config;
 
 import com.petproject.petproject.service.JwtService;
-import com.petproject.petproject.Repository.UserRepository;
+import com.petproject.petproject.repository.UserRepository;
 import com.petproject.petproject.entity.User;
 
 import jakarta.servlet.FilterChain;
@@ -58,7 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // 2️⃣ Authenticate only if email is found and no authentication exists
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            User user = repo.findByEmail(email);
+            User user = repo.findByEmail(email).orElse(null);
 
             if (user != null) {
                 UsernamePasswordAuthenticationToken authToken =

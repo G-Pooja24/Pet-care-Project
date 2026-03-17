@@ -1,4 +1,4 @@
-package com.petproject.petproject.Repository;
+package com.petproject.petproject.repository;
 
 
 
@@ -13,12 +13,15 @@ import java.util.List;
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
 
     // Find reminders for a specific pet
-    List<Reminder> findByPetId(Long petId);
+    List<Reminder> findByPet_Id(Long petId);
 
     // Find all reminders that are due and not yet notified
     List<Reminder> findByNotifiedFalseAndDueDateBefore(LocalDateTime dateTime);
 
     // Find reminders for an owner (when you map pet->owner later)
-    List<Reminder> findByPetIdIn(List<Long> petIds);
+    List<Reminder> findByPet_IdIn(List<Long> petIds);
+
+    // Debugging: Find all pending reminders
+    List<Reminder> findByNotifiedFalse();
 }
 

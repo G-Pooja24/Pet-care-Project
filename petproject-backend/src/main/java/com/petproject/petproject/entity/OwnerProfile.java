@@ -54,6 +54,18 @@ public class OwnerProfile {
     public String getPhoto() { return photo; }
     public void setPhoto(String photo) { this.photo = photo; }
 
+    @Transient
+    public String getPhotoUrl() {
+        if (photo != null && !photo.isEmpty()) {
+            return "http://localhost:8080/uploads/" + photo;
+        }
+        return null;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photo = photoUrl;
+    }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 }

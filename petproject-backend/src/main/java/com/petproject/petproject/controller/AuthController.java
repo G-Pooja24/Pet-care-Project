@@ -1,5 +1,5 @@
 package com.petproject.petproject.controller;
-import com.petproject.petproject.Repository.UserRepository;
+import com.petproject.petproject.repository.UserRepository;
 import com.petproject.petproject.dto.AuthResponse;
 import com.petproject.petproject.entity.Role;
 import com.petproject.petproject.entity.User;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -56,8 +56,16 @@ public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
         return ResponseEntity.badRequest().body(Map.of("message", "Invalid role!"));
     }
 
+    // ALLOW Admin login if they exist in DB (logic shifted below)
+    /*
+    if (role == Role.ADMIN) {
+        return ResponseEntity.status(403).body(Map.of("message", "Cannot register/login as ADMIN directly. Contact support."));
+    }
+    */
+
     // 🔥 1️⃣ Check if user exists
-    User user = repo.findByEmail(email);
+    // 🔥 1️⃣ Check if user exists
+    User user = repo.findByEmail(email).orElse(null);
 
     if (user == null) {
         // ❌ New user → do NOT send OTP → ask to register first
@@ -67,7 +75,15 @@ public ResponseEntity<?> sendOtp(@RequestBody Map<String, String> request) {
     }
 
     // 🔥 2️⃣ Existing user → update name + role (optional)
+    
+    // SECURITY CHECK: Prevent regular users from logging in as ADMIN
+    if (role == Role.ADMIN && user.getRole() != Role.ADMIN) {
+        return ResponseEntity.status(403).body(Map.of("message", "Access Denied: You do not have Admin privileges."));
+    }
+    
     user.setName(name);
+    // Only update role if it's NOT a sensitive switch (or maybe don't update role at all during login?)
+    // For now, we trust the flow, but we blocked the Admin escalation above.
     user.setRole(role);
 
     // 🔥 3️⃣ Generate OTP
@@ -103,7 +119,7 @@ public String test(@RequestParam String email){
    @PostMapping("/verify-otp")
 public ResponseEntity<?> verifyOtp(@RequestParam String email, @RequestParam String otp) {
 
-    User user = repo.findByEmail(email);
+    User user = repo.findByEmail(email).orElse(null);
 
     if(user == null) {
         return ResponseEntity.ok(new AuthResponse(null, "User not found!", null));
@@ -131,6 +147,7 @@ public ResponseEntity<?> verifyOtp(@RequestParam String email, @RequestParam Str
     "message", "Login Successful!",
    // "role", user.getRole().name().replace("ROLE_", ""),  // removes ROLE_
     "role", user.getRole().name(),
+    "userId", user.getId(), // Return userId for frontend
 
     "name", user.getName()
 ));
@@ -173,8 +190,12 @@ public String register(@RequestBody Map<String, String> request) {
         return "Invalid role";
     }
 
+    if (role == Role.ADMIN) {
+        return "Cannot register as ADMIN!";
+    }
+
     // Check if already exists
-    if (repo.findByEmail(email) != null) {
+    if (repo.findByEmail(email).isPresent()) {
         return "Email already registered!";
     }
 

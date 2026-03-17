@@ -1,0 +1,155 @@
+/* OwnerDashboard.css */
+.owner-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar Styling */
+/* Sidebar Styling - Moved to Sidebar.css */
+/* Main Content Area */
+.owner-dashboard-main {
+  flex: 1;
+  margin-left: 260px;
+  padding: 40px;
+}
+
+.dashboard-header {
+  margin-bottom: 35px;
+}
+
+.dashboard-header h2 {
+  color: #1e293b;
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.dashboard-header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 16px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.bg-blue {
+  background-color: #eff6ff;
+  color: #3b82f6;
+}
+
+.bg-purple {
+  background-color: #f3e8ff;
+  color: #a855f7;
+}
+
+.bg-green {
+  background-color: #ecfdf5;
+  color: #7ec3ac;
+}
+
+.bg-orange {
+  background-color: #fff7ed;
+  color: #f97316;
+}
+
+.owner-stats-grid .stat-info h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.stat-info p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Quick Actions */
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 20px;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.action-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-card:hover {
+  border-color: #6c5ce7;
+  background-color: #fdfeff;
+}
+
+.action-card h4 {
+  margin: 10px 0 5px;
+  color: #1e293b;
+}
+
+.action-card p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Content Wrapper for dynamic components */
+.dashboard-content-wrapper {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  min-height: 500px;
+  overflow: hidden;
+}
+
+/* Logout button styles moved to Sidebar.css */

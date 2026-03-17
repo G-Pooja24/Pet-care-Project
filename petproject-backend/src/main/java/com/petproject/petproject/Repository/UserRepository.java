@@ -1,9 +1,9 @@
-package com.petproject.petproject.Repository;
+package com.petproject.petproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.petproject.petproject.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+    java.util.Optional<User> findByEmail(String email);
 }

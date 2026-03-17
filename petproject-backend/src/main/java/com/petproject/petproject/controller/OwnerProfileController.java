@@ -1,7 +1,9 @@
 package com.petproject.petproject.controller;
 
 import com.petproject.petproject.entity.OwnerProfile;
-import com.petproject.petproject.Repository.OwnerProfileRepository;
+import com.petproject.petproject.repository.OwnerProfileRepository;
+import com.petproject.petproject.repository.UserRepository;
+import com.petproject.petproject.entity.User;
 import com.petproject.petproject.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +24,42 @@ public class OwnerProfileController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
+    private com.petproject.petproject.service.OwnerProfileService profileService;
+
     @GetMapping("/profile")
     public OwnerProfile getProfile(@RequestHeader("Authorization") String token) {
         String email = jwtService.extractEmail(token.replace("Bearer ", ""));
 
+        Optional<OwnerProfile> profileOpt = ownerProfileRepo.findByEmail(email);
+        OwnerProfile profile = profileOpt.orElse(new OwnerProfile());
 
-        Optional<OwnerProfile> profile = ownerProfileRepo.findByEmail(email);
-        return profile.orElse(new OwnerProfile());
+        // Self-Healing: Ensure Profile is linked to User
+        if (profile.getUserId() == null) {
+            User user = userRepo.findByEmail(email).orElse(null);
+            if (user != null) {
+                profile.setUserId(user.getId());
+                profile.setEmail(user.getEmail()); // Ensure sync
+                if (profile.getName() == null) profile.setName(user.getName()); // Sync name if empty
+                profile = ownerProfileRepo.save(profile); // Save and re-assign to get generated ID if new
+            }
+        }
+        return profile;
     }
 
-    @PutMapping("/profile")
-public OwnerProfile updateProfile(@RequestHeader("Authorization") String token,
-                                  @RequestBody OwnerProfile profile) {
-
-    String email = jwtService.extractEmail(token.replace("Bearer ", ""));
-
-    OwnerProfile existing = ownerProfileRepo.findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("Owner profile not found"));
-
-    existing.setName(profile.getName());
-    existing.setPhone(profile.getPhone());
-    existing.setAddress(profile.getAddress());
-  //  existing.setPhoto(profile.getPhoto());
-
-    return ownerProfileRepo.save(existing);
+    @PutMapping(value = "/profile", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public OwnerProfile updateProfile(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("name") String name,
+            @RequestParam("phone") String phone,
+            @RequestParam("address") String address,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) {
+        String email = jwtService.extractEmail(token.replace("Bearer ", ""));
+        return profileService.updateProfile(email, name, phone, address, photo);
     }
 
 
@@ -55,15 +69,7 @@ public OwnerProfile updatePhoto(
         @RequestParam("photo") MultipartFile photo
 ) {
     String email = jwtService.extractEmail(token.replace("Bearer ", ""));
-
-    OwnerProfile existing = ownerProfileRepo.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Owner not found"));
-
-    // Fake save logic → replace with real file save later
-    String fileName = photo.getOriginalFilename();
-    existing.setPhoto(fileName);
-
-    return ownerProfileRepo.save(existing);
+    return profileService.updatePhoto(email, photo);
 }
 }
  //latest one

@@ -1,0 +1,144 @@
+.vet-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+/* Sidebar Styles moved to Sidebar.css */
+
+/* Main Content */
+.vet-dashboard-main {
+  flex: 1;
+  margin-left: 260px;
+  /* Match sidebar width */
+  padding: 30px;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.dashboard-header p {
+  color: #7f8c8d;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.stat-info h3 {
+  margin: 0;
+  font-size: 28px;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.stat-info p {
+  margin: 5px 0 0;
+  color: #95a5a6;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Colors for stats */
+.total-apps {
+  background-color: #e8f6f3;
+  color: #1abc9c;
+}
+
+.pending-req {
+  background-color: #fef9e7;
+  color: #f1c40f;
+}
+
+.completed {
+  background-color: #eafaf1;
+  color: #2ecc71;
+}
+
+.today-sched {
+  background-color: #fff0f0;
+  color: #e74c3c;
+}
+
+/* Quick Actions */
+.quick-actions {
+  margin-bottom: 40px;
+}
+
+.actions-list {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.action-btn {
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: 300px;
+  height: 50px;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
